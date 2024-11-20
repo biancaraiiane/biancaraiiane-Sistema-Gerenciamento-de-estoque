@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Estoque</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gerenciamento de Estoque</h1>
+
+      <form action="/add" method="POST" class="form">
+        <input type="text" name="nome" placeholder="Nome do Item" required />
+        <input
+          type="number"
+          name="quantidade"
+          placeholder="Quantidade"
+          required
+        />
+        <button type="submit">Adicionar Item</button>
+      </form>
+
+      <h2>Estoque Atual</h2>
+      {% if estoque %}
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in estoque %}
+          <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>
+              <form
+                action="/edit/{{ loop.index0 }}"
+                method="POST"
+                class="inline-form"
+              >
+                <input
+                  type="text"
+                  name="novo_nome"
+                  placeholder="Novo nome (optional)"
+                />
+                <input
+                  type="number"
+                  name="nova_quantidade"
+                  placeholder="Nova quantidade (optional)"
+                />
+                <button type="submit" class="edit-btn">Editar</button>
+              </form>
+              <a href="/delete/{{ loop.index0 }}" class="delete-btn">Deletar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Sem Itens</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
